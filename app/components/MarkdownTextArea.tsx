@@ -7,7 +7,6 @@ import type { SimpleMDEReactProps } from 'react-simplemde-editor';
 const MarkdownTextArea = () => {
 	const autofocusNoSpellcheckerOptions = useMemo(() => {
 		return {
-			autofocus: true,
 			spellChecker: false,
 		} as SimpleMDEReactProps['options'];
 	}, []);

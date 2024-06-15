@@ -14,7 +14,7 @@ function NavBar() {
 	const pathName = usePathname();
 
 	return (
-		<nav className="flex space-x-6 h-16 border-b items-center mb-5 px-5">
+		<nav className="flex space-x-6 h-16 border-b items-center mb-9 px-5">
 			<Link href={'/'}>
 				<AiFillBug />
 			</Link>

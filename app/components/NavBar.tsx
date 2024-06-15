@@ -22,9 +22,9 @@ function NavBar() {
 				{navLinks.map((link) => (
 					<Link
 						className={classnames({
-							'text-zinc-900': link.href === pathName,
+							'text-cyan-600': link.href === pathName,
 							'text-zinc-500': link.href !== pathName,
-							'hover:text-zinc-800 transition-colors': true,
+							'hover:text-cyan-600 transition-colors': true,
 						})}
 						key={link.href}
 						href={link.href}

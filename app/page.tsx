@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Home() {
 	return (
 		<div>
-			Hello world
+			<h1>Hello world</h1>
 			<Button>
 				<Link href={'/issues/new'}>New Issue</Link>
 			</Button>

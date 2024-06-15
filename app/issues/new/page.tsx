@@ -1,6 +1,7 @@
 'use client';
-import { Button, TextArea, TextField } from '@radix-ui/themes';
 import React from 'react';
+import { Button, TextArea, TextField } from '@radix-ui/themes';
+import MarkdownTextArea from '@/app/components/MarkdownTextArea';
 
 const NewIssuePage = () => {
 	return (
@@ -8,7 +9,7 @@ const NewIssuePage = () => {
 			<TextField.Root placeholder="Title">
 				<TextField.Slot />
 			</TextField.Root>
-			<TextArea size={'3'} placeholder="Description" />
+			<MarkdownTextArea />
 			<Button>Submit New Issue</Button>
 		</div>
 	);

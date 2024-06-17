@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -12,10 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/zodSchema';
 import { z } from 'zod';
 import ErrorHandler from '@/app/components/ErrorHandler';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
+	const [isSubmitting, setSubmitting] = useState(false);
+
 	const router = useRouter();
 	const errorNotice = (msg: string) => toast.error(msg);
 	const successNotice = (msg: string) => toast.success(msg);
@@ -33,9 +36,11 @@ const NewIssuePage = () => {
 	const onSubmit: SubmitHandler<IssueForm> = async (data) => {
 		try {
 			await axios.post('/api/issues', data);
+			setSubmitting(true);
 			successNotice('Issue created successfully');
 			router.push('/issues');
 		} catch (error) {
+			setSubmitting(false);
 			if (axios.isAxiosError(error)) {
 				if (error.response) {
 					switch (error.response.status) {
@@ -74,7 +79,9 @@ const NewIssuePage = () => {
 			{errors.description && (
 				<ErrorHandler>{errors.description?.message}</ErrorHandler>
 			)}
-			<Button>Submit New Issue</Button>
+			<Button disabled={isSubmitting}>
+				Submit New Issue {isSubmitting && <Spinner />}
+			</Button>
 		</form>
 	);
 };

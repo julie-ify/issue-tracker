@@ -2,6 +2,7 @@ import prisma from '@/prisma/client';
 import { Button, Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import React from 'react';
+import StatusBadge from '../components/StatusBadge';
 
 const issuesPage = async () => {
 	// retrieve issues without making axios/fetch request because this is a server component
@@ -32,10 +33,12 @@ const issuesPage = async () => {
 						<Table.Row key={issue.id}>
 							<Table.RowHeaderCell>
 								{issue.title}{' '}
-								<div className="md:hidden block">{issue.status}</div>
+								<div className="md:hidden block">
+									<StatusBadge status={issue.status} />
+								</div>
 							</Table.RowHeaderCell>
 							<Table.Cell className="hidden md:table-cell">
-								{issue.status}
+								<StatusBadge status={issue.status} />
 							</Table.Cell>
 							<Table.Cell className="hidden md:table-cell">
 								{issue.createdAt.toDateString()}

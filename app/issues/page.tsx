@@ -1,9 +1,49 @@
+import prisma from '@/prisma/client';
+import { Button, Table } from '@radix-ui/themes';
+import Link from 'next/link';
 import React from 'react';
 
-const issuesPage = () => {
+const issuesPage = async () => {
+	// retrieve issues without making axios/fetch request because this is a server component
+	const issues = await prisma.issue.findMany();
 	return (
 		<div>
-			issuesPage
+			<div className="mb-4">
+				<Button>
+					<Link href={'/issues/new'}>Create New Issue</Link>
+				</Button>
+			</div>
+
+			<Table.Root variant="surface">
+				<Table.Header>
+					<Table.Row>
+						<Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
+						<Table.ColumnHeaderCell className="hidden md:table-cell">
+							Status
+						</Table.ColumnHeaderCell>
+						<Table.ColumnHeaderCell className="hidden md:table-cell">
+							CreatedAt
+						</Table.ColumnHeaderCell>
+					</Table.Row>
+				</Table.Header>
+
+				<Table.Body>
+					{issues.map((issue) => (
+						<Table.Row key={issue.id}>
+							<Table.RowHeaderCell>
+								{issue.title}{' '}
+								<div className="md:hidden block">{issue.status}</div>
+							</Table.RowHeaderCell>
+							<Table.Cell className="hidden md:table-cell">
+								{issue.status}
+							</Table.Cell>
+							<Table.Cell className="hidden md:table-cell">
+								{issue.createdAt.toDateString()}
+							</Table.Cell>
+						</Table.Row>
+					))}
+				</Table.Body>
+			</Table.Root>
 		</div>
 	);
 };

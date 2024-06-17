@@ -24,7 +24,7 @@ export default function RootLayout({
 			<body className={inter.variable}>
 				<Theme accentColor="cyan">
 					<NavBar />
-					<main className="px-5">{children}</main>
+					<main className="px-10">{children}</main>
 				</Theme>
 				<ToastContainer
 					position="top-right"

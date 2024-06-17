@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { Button, Text, TextField } from '@radix-ui/themes';
+import { Button, TextField } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/zodSchema';
 import { z } from 'zod';
+import ErrorHandler from '@/app/components/ErrorHandler';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -60,11 +61,7 @@ const NewIssuePage = () => {
 				placeholder="Title"
 				{...register('title', { required: true })}
 			/>
-			{errors.title && (
-				<Text color="red" as="p">
-					Title is required
-				</Text>
-			)}
+			<ErrorHandler>{errors.title?.message}</ErrorHandler>
 			{/* use controller to render simpleMDE component because it is not a react input field */}
 			<Controller
 				name="description"
@@ -74,13 +71,9 @@ const NewIssuePage = () => {
 					<SimpleMDE placeholder="Description" {...field} />
 				)}
 			/>
-
 			{errors.description && (
-				<Text color="red" as="p">
-					Description is required
-				</Text>
+				<ErrorHandler>{errors.description?.message}</ErrorHandler>
 			)}
-
 			<Button>Submit New Issue</Button>
 		</form>
 	);

@@ -3,15 +3,16 @@ import React from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { Button, TextField } from '@radix-ui/themes';
+import { Button, Text, TextField } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+// incoporate react hook form with zod validation
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createIssueSchema } from '@/app/zodSchema';
+import { z } from 'zod';
 
-interface Inputs {
-	title: string;
-	description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
 	const router = useRouter();
@@ -23,14 +24,16 @@ const NewIssuePage = () => {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<Inputs>();
+	} = useForm<IssueForm>({
+		resolver: zodResolver(createIssueSchema),
+	});
 
-	const onSubmit: SubmitHandler<Inputs> = async (data) => {
+	// the submitHandler receives the data (title and description) object from the form
+	const onSubmit: SubmitHandler<IssueForm> = async (data) => {
 		try {
 			await axios.post('/api/issues', data);
 			successNotice('Issue created successfully');
 			router.push('/issues');
-			
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				if (error.response) {
@@ -57,8 +60,12 @@ const NewIssuePage = () => {
 				placeholder="Title"
 				{...register('title', { required: true })}
 			/>
-			{errors.title && <em className="text-red-600">Title is required</em>}
-			{/* use controller to render simpleMDE component beacuse it is not a react input field */}
+			{errors.title && (
+				<Text color="red" as="p">
+					Title is required
+				</Text>
+			)}
+			{/* use controller to render simpleMDE component because it is not a react input field */}
 			<Controller
 				name="description"
 				control={control}
@@ -67,11 +74,12 @@ const NewIssuePage = () => {
 					<SimpleMDE placeholder="Description" {...field} />
 				)}
 			/>
-			<div>
-				{errors.description && (
-					<em className="text-red-600">Description is required</em>
-				)}
-			</div>
+
+			{errors.description && (
+				<Text color="red" as="p">
+					Description is required
+				</Text>
+			)}
 
 			<Button>Submit New Issue</Button>
 		</form>

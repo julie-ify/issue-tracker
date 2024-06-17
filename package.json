@@ -11,6 +11,7 @@
 		"test:watch": "jest --watch"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^3.6.0",
 		"@prisma/client": "^5.3.1",
 		"@radix-ui/themes": "^3.0.5",
 		"@testing-library/user-event": "^14.5.2",

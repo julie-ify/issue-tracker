@@ -1,10 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Button, TextField } from '@radix-ui/themes';
-import SimpleMDE from 'react-simplemde-editor';
+import { Button, TextArea, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 // incoporate react hook form with zod validation
@@ -68,13 +67,11 @@ const NewIssuePage = () => {
 			/>
 			<ErrorHandler>{errors.title?.message}</ErrorHandler>
 			{/* use controller to render simpleMDE component because it is not a react input field */}
-			<Controller
-				name="description"
-				control={control}
-				rules={{ required: true }}
-				render={({ field }) => (
-					<SimpleMDE placeholder="Description" {...field} />
-				)}
+			<TextArea
+				size={'3'}
+				resize={'vertical'}
+				{...register('description', { required: true })}
+				placeholder="Description"
 			/>
 			{errors.description && (
 				<ErrorHandler>{errors.description?.message}</ErrorHandler>

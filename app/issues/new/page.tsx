@@ -5,10 +5,10 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button, TextArea, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 // incoporate react hook form with zod validation
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createIssueSchema } from '@/app/zodSchema';
+import { createIssueSchema } from '@/app/utility/zodSchema';
 import { z } from 'zod';
 import ErrorHandler from '@/app/components/ErrorHandler';
 import Spinner from '@/app/components/Spinner';

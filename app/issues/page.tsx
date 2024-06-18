@@ -8,7 +8,7 @@ import delay from 'delay';
 const issuesPage = async () => {
 	// retrieve issues without making axios/fetch request because this is a server component
 	const issues = await prisma.issue.findMany();
-	await delay(5000);
+	await delay(1000);
 
 	return (
 		<div>
@@ -35,7 +35,7 @@ const issuesPage = async () => {
 					{issues.map((issue) => (
 						<Table.Row key={issue.id}>
 							<Table.RowHeaderCell>
-								{issue.title}{' '}
+								<Link href={`/issues/${issue.id}`}>{issue.title}</Link>
 								<div className="md:hidden block">
 									<StatusBadge status={issue.status} />
 								</div>

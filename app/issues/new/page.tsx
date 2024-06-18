@@ -24,7 +24,6 @@ const NewIssuePage = () => {
 
 	const {
 		register,
-		control,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<IssueForm>({

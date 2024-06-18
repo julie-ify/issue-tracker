@@ -1,23 +1,15 @@
-import prisma from '@/prisma/client';
-import { Button, Table } from '@radix-ui/themes';
-import Link from 'next/link';
 import React from 'react';
-import StatusBadge from '../components/StatusBadge';
-import delay from 'delay';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { Table } from '@radix-ui/themes';
+import CreateIssueButton from './CreateIssueButton';
 
-const issuesPage = async () => {
-	// retrieve issues without making axios/fetch request because this is a server component
-	const issues = await prisma.issue.findMany();
-	await delay(5000);
+const issues = [1, 2, 3, 4, 5];
 
+const IssueLoader = () => {
 	return (
 		<div>
-			<div className="mb-4">
-				<Button>
-					<Link href={'/issues/new'}>Create New Issue</Link>
-				</Button>
-			</div>
-
+			<CreateIssueButton />
 			<Table.Root variant="surface">
 				<Table.Header>
 					<Table.Row>
@@ -33,18 +25,18 @@ const issuesPage = async () => {
 
 				<Table.Body>
 					{issues.map((issue) => (
-						<Table.Row key={issue.id}>
+						<Table.Row key={issue}>
 							<Table.RowHeaderCell>
-								{issue.title}{' '}
+								<Skeleton />
 								<div className="md:hidden block">
-									<StatusBadge status={issue.status} />
+									<Skeleton />
 								</div>
 							</Table.RowHeaderCell>
 							<Table.Cell className="hidden md:table-cell">
-								<StatusBadge status={issue.status} />
+								<Skeleton />
 							</Table.Cell>
 							<Table.Cell className="hidden md:table-cell">
-								{issue.createdAt.toDateString()}
+								<Skeleton />
 							</Table.Cell>
 						</Table.Row>
 					))}
@@ -54,4 +46,4 @@ const issuesPage = async () => {
 	);
 };
 
-export default issuesPage;
+export default IssueLoader;

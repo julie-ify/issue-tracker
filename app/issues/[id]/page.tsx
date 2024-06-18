@@ -1,11 +1,10 @@
-import prisma from '@/prisma/client';
-import { notFound } from 'next/navigation';
-import React from 'react';
-import { isValidId } from '@/app/utility/utils';
-import { Box, Card, Flex, Heading, Separator, Text } from '@radix-ui/themes';
 import StatusBadge from '@/app/components/StatusBadge';
-import delay from 'delay';
+import { isValidId } from '@/app/utility/utils';
+import prisma from '@/prisma/client';
+import { Box, Card, Flex, Heading, Separator, Text } from '@radix-ui/themes';
+import { notFound } from 'next/navigation';
 import CreateIssueButton from '../CreateIssueButton';
+import ReactMarkdowm from 'react-markdown'
 
 interface Props {
 	params: { id: string };
@@ -21,10 +20,8 @@ const IssueDetailsPage = async ({ params: { id } }: Props) => {
 
 		if (!issue) notFound();
 
-		await delay(1000);
-
 		return (
-			<Box className="mx-auto max-w-2xl w-full lg:max-w-3xl space-y-3">
+			<Box>
 				<Heading>{issue.title}</Heading>
 				<Flex className="space-x-3" align={'center'} justify={'between'}>
 					<Box>
@@ -39,8 +36,8 @@ const IssueDetailsPage = async ({ params: { id } }: Props) => {
 					className="mb-4"
 					my={'5'}
 				/>
-				<Card>
-					<p className="p-3">{issue.description}</p>
+				<Card className='prose'>
+					<ReactMarkdowm className="ReactMarkdowm-3">{issue.description}</ReactMarkdowm>
 				</Card>
 			</Box>
 		);

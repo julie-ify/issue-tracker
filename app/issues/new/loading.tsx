@@ -1,9 +1,15 @@
-import React from 'react'
+import { Box } from '@radix-ui/themes';
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const NewIssuesLoader = () => {
 	return (
-		<div>Loading...</div>
-	)
-}
+		<Box>
+			<Skeleton />
+			<Skeleton height={'4'}/>
+		</Box>
+	);
+};
 
-export default NewIssuesLoader
+export default NewIssuesLoader;

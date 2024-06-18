@@ -5,13 +5,18 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button, TextArea, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 // incoporate react hook form with zod validation
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/utility/zodSchema';
 import { z } from 'zod';
 import ErrorHandler from '@/app/components/ErrorHandler';
 import Spinner from '@/app/components/Spinner';
+import dynamic from 'next/dynamic';
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+	ssr: false,
+});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -25,6 +30,7 @@ const NewIssuePage = () => {
 	const {
 		register,
 		handleSubmit,
+		control,
 		formState: { errors },
 	} = useForm<IssueForm>({
 		resolver: zodResolver(createIssueSchema),
@@ -59,18 +65,19 @@ const NewIssuePage = () => {
 	};
 
 	return (
-		<form className="max-w-96 space-y-3" onSubmit={handleSubmit(onSubmit)}>
+		<form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
 			<TextField.Root
 				placeholder="Title"
 				{...register('title', { required: true })}
 			/>
 			<ErrorHandler>{errors.title?.message}</ErrorHandler>
-			{/* use controller to render simpleMDE component because it is not a react input field */}
-			<TextArea
-				size={'3'}
-				resize={'vertical'}
-				{...register('description', { required: true })}
-				placeholder="Description"
+			<Controller
+				name="description"
+				control={control}
+				rules={{ required: true }}
+				render={({ field }) => (
+					<SimpleMDE placeholder="Description" {...field} />
+				)}
 			/>
 			{errors.description && (
 				<ErrorHandler>{errors.description?.message}</ErrorHandler>

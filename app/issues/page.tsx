@@ -1,16 +1,12 @@
 import prisma from '@/prisma/client';
 import { Button, Table } from '@radix-ui/themes';
 import Link from 'next/link';
-import CustomLink from '@/app/components/Link';
 import React from 'react';
-import StatusBadge from '../components/StatusBadge';
-import delay from 'delay';
+import { StatusBadge, Link as CustomLink } from '@/app/components';
 
 const issuesPage = async () => {
 	// retrieve issues without making axios/fetch request because this is a server component
 	const issues = await prisma.issue.findMany();
-	await delay(1000);
-
 	return (
 		<div>
 			<div className="mb-4">

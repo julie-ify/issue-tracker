@@ -1,17 +1,19 @@
 'use client';
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { TextField } from '@radix-ui/themes';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { Button, TextField } from '@radix-ui/themes';
 import 'easymde/dist/easymde.min.css';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 // incoporate react hook form with zod validation
-import { zodResolver } from '@hookform/resolvers/zod';
+import { ErrorHandler } from '@/app/components';
 import { createIssueSchema } from '@/app/utility/zodSchema';
-import { z } from 'zod';
-import { Spinner, ErrorHandler } from '@/app/components';
+import { zodResolver } from '@hookform/resolvers/zod';
 import dynamic from 'next/dynamic';
+import { z } from 'zod';
+import { handleError } from './handleError';
+import SubmitIssueButton from './SubmitIssueButton';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
 	ssr: false,
@@ -21,7 +23,6 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
 	const [isSubmitting, setSubmitting] = useState(false);
-
 	const router = useRouter();
 	const errorNotice = (msg: string) => toast.error(msg);
 	const successNotice = (msg: string) => toast.success(msg);
@@ -44,22 +45,8 @@ const NewIssuePage = () => {
 			router.push('/issues');
 		} catch (error) {
 			setSubmitting(false);
-			if (axios.isAxiosError(error)) {
-				if (error.response) {
-					switch (error.response.status) {
-						case 400:
-							errorNotice(error.response.data.error.issues[0].message);
-							break;
-						case 500:
-							errorNotice('500 Internal Server Error');
-							break;
-					}
-				} else {
-					errorNotice('Unexpected Error, try again later');
-				}
-			} else {
-				errorNotice('Sorry, try again later');
-			}
+			const errorMsg = handleError(error);
+			errorNotice(errorMsg);
 		}
 	};
 
@@ -81,9 +68,7 @@ const NewIssuePage = () => {
 			{errors.description && (
 				<ErrorHandler>{errors.description?.message}</ErrorHandler>
 			)}
-			<Button disabled={isSubmitting}>
-				Submit New Issue {isSubmitting && <Spinner />}
-			</Button>
+			<SubmitIssueButton isSubmitting={isSubmitting} />
 		</form>
 	);
 };

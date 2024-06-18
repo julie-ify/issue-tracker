@@ -10,14 +10,14 @@ const statusMap: Record<
 	Status,
 	{ label: string; color: 'red' | 'violet' | 'green' }
 > = {
-	OPEN: { label: 'Open', color: 'red' },
+	OPEN: { label: 'Open', color: 'green' },
 	IN_PROGRESS: { label: 'In Progress', color: 'violet' },
-	CLOSED: { label: 'Closed', color: 'green' },
+	CLOSED: { label: 'Closed', color: 'red' },
 };
 
 const StatusBadge = ({ status }: Props) => {
 	return (
-		<Badge color={statusMap[status].color}>{statusMap[status].label}</Badge>
+		<Badge color={statusMap[status].color} size={'3'}>{statusMap[status].label}</Badge>
 	);
 };
 

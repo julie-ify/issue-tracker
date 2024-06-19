@@ -1,8 +1,7 @@
+import { Link as CustomLink, StatusBadge } from '@/app/components';
 import prisma from '@/prisma/client';
-import { Button, Table } from '@radix-ui/themes';
-import Link from 'next/link';
-import React from 'react';
-import { StatusBadge, Link as CustomLink } from '@/app/components';
+import { Table } from '@radix-ui/themes';
+import CreateIssueButton from './CreateIssueButton';
 
 const issuesPage = async () => {
 	// retrieve issues without making axios/fetch request because this is a server component
@@ -10,9 +9,7 @@ const issuesPage = async () => {
 	return (
 		<div>
 			<div className="mb-4">
-				<Button>
-					<Link href={'/issues/new'}>Create New Issue</Link>
-				</Button>
+				<CreateIssueButton />
 			</div>
 
 			<Table.Root variant="surface">

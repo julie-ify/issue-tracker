@@ -40,3 +40,22 @@ export async function PATCH(request: NextRequest, { params: { id } }: Props) {
 		);
 	}
 }
+
+export async function DELETE(request: NextRequest, { params: { id } }: Props) {
+	const issue = await prisma.issue.findUnique({
+		where: {
+			id: parseInt(id),
+		},
+	});
+
+	if (!issue)
+		return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+
+	await prisma.issue.delete({
+		where: {
+			id: issue.id,
+		},
+	});
+
+	return NextResponse.json({}, { status: 200 });
+}

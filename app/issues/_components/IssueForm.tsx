@@ -8,19 +8,19 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 // incoporate react hook form with zod validation
 import { ErrorHandler } from '@/app/components';
-import { createIssueSchema } from '@/app/utility/zodSchema';
+import { IssueSchema } from '@/app/utility/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
 import { handleError } from '../new/handleError';
-import SubmitIssueButton from '../new/SubmitIssueButton';
+import SubmitIssueButton from './SubmitIssueButton';
 import { Issue } from '@prisma/client';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
 	ssr: false,
 });
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof IssueSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
 	const [isSubmitting, setSubmitting] = useState(false);
@@ -34,17 +34,23 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 		control,
 		formState: { errors },
 	} = useForm<IssueFormData>({
-		resolver: zodResolver(createIssueSchema),
+		resolver: zodResolver(IssueSchema),
 	});
 
 	// the submitHandler receives the data (title and description) object from the form
 	const onSubmit: SubmitHandler<IssueFormData> = async (data) => {
 		try {
-			await axios.post('/api/issues', data);
+			if (issue) {
+				axios.patch(`/api/issues/${issue.id}`, data);
+				successNotice('Issue was updated successfully');
+			} else {
+				await axios.post('/api/issues', data);
+				successNotice('Issue was created successfully');
+			}
 			setSubmitting(true);
-			successNotice('Issue created successfully');
 			router.push('/issues');
 		} catch (error) {
+			console.log(error)
 			setSubmitting(false);
 			const errorMsg = handleError(error);
 			errorNotice(errorMsg);
@@ -71,7 +77,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 			{errors.description && (
 				<ErrorHandler>{errors.description?.message}</ErrorHandler>
 			)}
-			<SubmitIssueButton isSubmitting={isSubmitting} />
+			<SubmitIssueButton isSubmitting={isSubmitting} issue={issue} />
 		</form>
 	);
 };

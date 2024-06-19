@@ -10,19 +10,15 @@ import { toast } from 'react-toastify';
 import { ErrorHandler } from '@/app/components';
 import { IssueSchema } from '@/app/utility/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import dynamic from 'next/dynamic';
+import { Issue } from '@prisma/client';
+import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
 import { handleError } from '../new/handleError';
 import SubmitIssueButton from './SubmitIssueButton';
-import { Issue } from '@prisma/client';
-
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
-	ssr: false,
-});
 
 type IssueFormData = z.infer<typeof IssueSchema>;
 
-const IssueForm = ({ issue }: { issue?: Issue }) => {
+const IssueForm = async ({ issue }: { issue?: Issue }) => {
 	const [isSubmitting, setSubmitting] = useState(false);
 	const router = useRouter();
 	const errorNotice = (msg: string) => toast.error(msg);

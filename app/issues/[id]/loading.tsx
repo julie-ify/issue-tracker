@@ -1,23 +1,27 @@
-import { Flex, Card, Box } from '@radix-ui/themes';
-import React from 'react';
 import Skeleton from '@/app/components/Skeleton';
+import { Box, Card, Flex, Grid } from '@radix-ui/themes';
 
 const IssueDetailsLoader = () => {
 	return (
-		<Box>
-			<Skeleton width={'5rem'} />
-			<Flex className="space-x-3" align={'center'} justify={'between'}>
-				<Box>
-					<Skeleton width={'8rem'} />
-					<Skeleton width={'8rem'} />
-				</Box>
-				<Skeleton width={'8rem'} />
-			</Flex>
-
-			<Card>
-				<Skeleton count={3} />
-			</Card>
-		</Box>
+		<Grid columns={{ initial: '1', sm: '2' }} gap={'4'} width={'auto'}>
+			<Box>
+				<Skeleton height={'1.5rem'} />
+				<Flex my={'3'} gap={'3'}>
+					<Skeleton width={'4rem'} height={'1.2rem'} />
+					<Skeleton width={'10rem'} height={'1.2rem'} />
+				</Flex>
+				<Card className="prose">
+					<Skeleton count={3} height={'1.2rem'} />
+				</Card>
+			</Box>
+			<Box
+				style={{
+					textAlign: 'right',
+				}}
+			>
+				<Skeleton width={'9rem'} height={'2rem'} />
+			</Box>
+		</Grid>
 	);
 };
 

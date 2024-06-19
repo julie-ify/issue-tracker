@@ -1,4 +1,3 @@
-import React from 'react';
 import Skeleton from '@/app/components/Skeleton';
 import { Table } from '@radix-ui/themes';
 import CreateIssueButton from './CreateIssueButton';

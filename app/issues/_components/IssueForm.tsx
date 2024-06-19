@@ -44,7 +44,7 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
 				successNotice('Issue was created successfully');
 			}
 			setSubmitting(true);
-			router.push('/issues');
+			router.push('/issues/list');
 			router.refresh(); // used to force page refresh to clear cache
 		} catch (error) {
 			setSubmitting(false);

@@ -6,7 +6,7 @@ const EditIssueButton = ({ issueId }: { issueId: number }) => {
 	return (
 		<>
 			<Button size={'3'} className="">
-				<Link href={`/issues/${issueId}/edit`}>
+				<Link href={`/issues/edit/${issueId}`}>
 					<Flex justify={'center'} align={'center'} gap={'3'}>
 						<HiMiniPencilSquare />
 						Edit

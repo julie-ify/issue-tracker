@@ -15,7 +15,7 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
 				>{`Opened on ${issue.createdAt.toDateString()}`}</Text>
 			</Box>
 			<Separator orientation="horizontal" size="4" className="mb-4" my={'5'} />
-			<Card className="prose">
+			<Card className="prose max-w-full">
 				<ReactMarkdowm className="ReactMarkdowm-3">
 					{issue.description}
 				</ReactMarkdowm>

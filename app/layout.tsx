@@ -24,7 +24,7 @@ export default function RootLayout({
 			<body className={inter.variable}>
 				<Theme accentColor="cyan">
 					<NavBar />
-					<main className="px-8 pb-5 mx-auto max-w-2xl w-full md:max-w-3xl space-y-3">
+					<main className="px-8 pb-5 mx-auto max-w-xl w-full md:max-w-4xl space-y-3">
 						{children}
 					</main>
 				</Theme>

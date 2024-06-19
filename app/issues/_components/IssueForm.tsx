@@ -49,8 +49,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 			}
 			setSubmitting(true);
 			router.push('/issues');
+			router.refresh(); // used to force page refresh to clear cache
 		} catch (error) {
-			console.log(error)
 			setSubmitting(false);
 			const errorMsg = handleError(error);
 			errorNotice(errorMsg);

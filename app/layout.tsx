@@ -1,11 +1,11 @@
+import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
-import './globals.css';
-import 'react-toastify/dist/ReactToastify.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import NavBar from './components/NavBar';
-import { Theme } from '@radix-ui/themes';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NavBar from './components/NavBar';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 

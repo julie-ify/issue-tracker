@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './components/NavBar';
 import './globals.css';
+import ReduxProvider from './providers/ReduxProvider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -23,10 +24,12 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.variable}>
 				<Theme accentColor="cyan">
-					<NavBar />
-					<main className="px-8 pb-5 mx-auto max-w-xl w-full md:max-w-4xl space-y-3">
-						{children}
-					</main>
+					<ReduxProvider>
+						<NavBar />
+						<main className="px-8 pb-5 mx-auto max-w-xl w-full md:max-w-4xl space-y-3">
+							{children}
+						</main>
+					</ReduxProvider>
 				</Theme>
 				<ToastContainer
 					position="top-right"

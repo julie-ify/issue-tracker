@@ -10,6 +10,15 @@ export async function POST(request: NextRequest) {
 	if (!validation.success)
 		return NextResponse.json(validation.error.errors, { status: 400 });
 
+	const existingUser = await prisma.user.findUnique({
+		where: {
+			email: body.email,
+		},
+	});
+
+	if (existingUser)
+		return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
+
 	const securePassword = await bcrypt.hash(body.password, 10);
 	const user = await prisma.user.create({
 		data: {

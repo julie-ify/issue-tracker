@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { AiFillBug } from 'react-icons/ai';
 import classnames from 'classnames';
 import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 function NavBar() {
 	const navLinks = [
@@ -11,6 +13,7 @@ function NavBar() {
 		{ label: 'Issues', href: '/issues/list' },
 	];
 
+	const user = useSelector((state: RootState) => state.user.userData);
 	const pathName = usePathname();
 
 	return (
@@ -33,6 +36,7 @@ function NavBar() {
 					</Link>
 				))}
 			</ul>
+			<span>LoggedIn as {user?.name}</span>
 		</nav>
 	);
 }

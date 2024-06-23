@@ -1,7 +1,7 @@
 'use client';
 import { ErrorHandler } from '@/app/components';
 import { setUser } from '@/app/store/reducers/user';
-import { userSchema } from '@/app/utility/zodSchema';
+import { signupSchema } from '@/app/utility/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Grid, TextField } from '@radix-ui/themes';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
-type SignupForm = z.infer<typeof userSchema>;
+type SignupForm = z.infer<typeof signupSchema>;
 
 const Signup = () => {
 	const {
@@ -18,7 +18,7 @@ const Signup = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<SignupForm>({
-		resolver: zodResolver(userSchema),
+		resolver: zodResolver(signupSchema),
 	});
 
 	const router = useRouter();

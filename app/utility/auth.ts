@@ -1,21 +1,38 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { jwtVerify, SignJWT } from 'jose';
 
-const SECRET_KEY = process.env.JWT_SECRET;
+const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export const hashPassword = async (password: string) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
+	const salt = await bcrypt.genSalt(10);
+	return await bcrypt.hash(password, salt);
 };
 
-export const verifyPassword = async (password: string, hashedPassword: string) => {
-  return await bcrypt.compare(password, hashedPassword);
+export const verifyPassword = async (
+	password: string,
+	hashedPassword: string
+) => {
+	return await bcrypt.compare(password, hashedPassword);
 };
 
-export const generateToken = (userId: string) => {
-  return jwt.sign({ userId }, SECRET_KEY!, { expiresIn: '1h' });
-};
+export async function generateToken(userId: string, expiresIn: string = '1h') {
+	const alg = 'HS256';
 
-export const verifyToken = (token: string) => {
-  return jwt.verify(token, SECRET_KEY!);
+	const token = await new SignJWT({ userId })
+		.setProtectedHeader({ alg })
+		.setIssuedAt()
+		.setExpirationTime(expiresIn)
+		.sign(SECRET_KEY);
+
+	return token;
+}
+
+// decode token and check expiration
+export const verifyToken = async (token: string) => {
+	try {
+		const { payload } = await jwtVerify(token, SECRET_KEY!);
+		return payload;
+	} catch (error) {
+		throw new Error('Token verification failed');
+	}
 };

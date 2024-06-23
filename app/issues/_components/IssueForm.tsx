@@ -5,15 +5,15 @@ import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 // incoporate react hook form with zod validation
 import { ErrorHandler } from '@/app/components';
+import { errorNotice, successNotice } from '@/app/components/Toast';
 import { IssueSchema } from '@/app/utility/zodSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
-import { handleError } from '../new/handleError';
+import { handleError } from '../../components/handleError';
 import SubmitIssueButton from './SubmitIssueButton';
 
 type IssueFormData = z.infer<typeof IssueSchema>;
@@ -21,8 +21,6 @@ type IssueFormData = z.infer<typeof IssueSchema>;
 const IssueForm = async ({ issue }: { issue?: Issue }) => {
 	const [isSubmitting, setSubmitting] = useState(false);
 	const router = useRouter();
-	const errorNotice = (msg: string) => toast.error(msg);
-	const successNotice = (msg: string) => toast.success(msg);
 
 	const {
 		register,

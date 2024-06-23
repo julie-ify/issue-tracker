@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
 	if (existingUser)
 		return NextResponse.json(
-			{ error: 'Invalid email or password' },
+			{ message: 'Invalid email or password' },
 			{ status: 401 }
 		);
 
@@ -34,28 +34,23 @@ export async function POST(request: NextRequest) {
 
 	if (!user) {
 		return NextResponse.json(
-			{ error: 'An unexpected error occurred' },
+			{ message: 'An unexpected error occurred' },
 			{ status: 401 }
 		);
 	}
 
-	const token = generateToken(user.id);
+	const token = await generateToken(user.id);
 	if (!token)
 		return NextResponse.json(
-			{ error: 'An unexpected error occurred' },
+			{ message: 'An unexpected error occurred' },
 			{ status: 401 }
 		);
 
-	const { name, email, role, createdAt } = user;
-	const responseData = { name, email, role, createdAt };
+	const { name, email, role } = user;
+	const responseData = { name, email, role };
 
 	const response = NextResponse.json(responseData, { status: 201 });
 
-	setCookie(response, 'token', token, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 1000, // max age in milliseconds
-		path: '/',
-	});
+	setCookie(response, 'token', token);
 	return response;
 }

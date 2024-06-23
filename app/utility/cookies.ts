@@ -1,28 +1,33 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { serialize, parse } from 'cookie';
+import { parse } from 'cookie';
 
 export const setCookie = (
 	res: NextResponse,
 	name: string,
 	value: string,
-	options: any = {}
 ) => {
 	const stringValue =
 		typeof value === 'object' ? JSON.stringify(value) : String(value);
 
-	if ('maxAge' in options) {
-		options.expires = new Date(Date.now() + options.maxAge);
-		options.maxAge = options.maxAge / 1000; // convert from milliseconds to seconds
-	}
-
-	res.headers.append('Set-Cookie', serialize(name, String(stringValue), options));
+	res.cookies.set(name, stringValue, {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		maxAge: 60 * 60 * 1000,
+		expires: new Date(Date.now() + 60 * 60 * 1000),
+		path: '/',
+	});
 };
 
 export const getCookie = (req: NextRequest, name: string) => {
-	const cookies = parse(req.headers.get('cookie') || '');
-	return cookies[name];
+	const cookies = req.cookies.get(name)?.value;
+	return cookies;
 };
 
 export const removeCookie = (res: NextResponse, name: string) => {
-	res.headers.append('Set-Cookie', serialize(name, '', { maxAge: -1 }));
+	res.cookies.set(name, '', {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		path: '/',
+		expires: new Date(0), // Expire the cookie by passing expired date/time
+	});
 };

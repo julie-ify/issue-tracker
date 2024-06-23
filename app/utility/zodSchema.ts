@@ -5,8 +5,13 @@ export const IssueSchema = z.object({
 	description: z.string().min(3, 'Description must be more than 3 chars'),
 });
 
-export const userSchema = z.object({
+export const signupSchema = z.object({
 	name: z.string().min(5),
+	email: z.string().min(5),
+	password: z.string().min(5)
+})
+
+export const signinSchema = z.object({
 	email: z.string().min(5),
 	password: z.string().min(5)
 })

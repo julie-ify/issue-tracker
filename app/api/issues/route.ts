@@ -10,7 +10,8 @@ export async function POST(request: NextRequest) {
 	if (!token)
 		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-	const verifiedToken = await verifyToken(token);
+	await verifyToken(token);
+	
 	const body = await request.json();
 	const validatedData = IssueSchema.safeParse(body);
 
@@ -22,7 +23,6 @@ export async function POST(request: NextRequest) {
 		data: {
 			title: body.title,
 			description: body.description,
-			authorId: verifiedToken.userId as string,
 		},
 	});
 

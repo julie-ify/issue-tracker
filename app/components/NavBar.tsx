@@ -69,34 +69,31 @@ function NavBar() {
 					</ul>
 				</Box>
 				<Box className="flex justify-end">
-					<Link
-						className={classnames({
-							'text-cyan-600': '/auth/signin' === pathName,
-							'text-zinc-500': '/auth/signin' !== pathName,
-							'hover:text-cyan-600 transition-colors': true,
-						})}
-						href={'/auth/signin'}
-					>
-						Signin
-					</Link>
+					{!user?.name && (
+						<Link
+							className={classnames({
+								'text-cyan-600': '/auth/signin' === pathName,
+								'text-zinc-500': '/auth/signin' !== pathName,
+								'hover:text-cyan-600 transition-colors': true,
+							})}
+							href={'/auth/signin'}
+						>
+							Signin
+						</Link>
+					)}
 
 					{user?.name && (
 						<Box className="flex gap-4 items-center">
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
-									<Button variant="soft" className="cursor-pointer">
-										<Avatar
-											fallback={extractFirstLetter(user.name)}
-											radius="full"
-										/>
+									<Button variant="soft" className='rounded-full cursor-pointer'>
+										{extractFirstLetter(user.name)}
 									</Button>
 								</DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item>
-										<Text className="cursor-pointer" size={'2'}>
-											{user.email}
-										</Text>
-									</DropdownMenu.Item>
+									<DropdownMenu.Label>
+										<Text size={'2'}>{user.email}</Text>
+									</DropdownMenu.Label>
 									<DropdownMenu.Item>
 										<Text
 											className="cursor-pointer"

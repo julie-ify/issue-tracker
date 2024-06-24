@@ -15,7 +15,7 @@ const AssignIssue = () => {
 		fetchUsers();
 	}, []);
 	return (
-		<Select.Root size="3" defaultValue='Assign isse'>
+		<Select.Root size="3" defaultValue='Assign issue'>
 			<Select.Trigger className="cursor-pointer" />
 			<Select.Content>
 				{users.map((user) => (

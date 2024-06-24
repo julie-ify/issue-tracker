@@ -16,5 +16,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/issues/:path*', '/api/issues/:id*', '/api/auth/user']
+	// + means one or more parameters
+	matcher: ['/', '/issues/edit/:id+']
 };

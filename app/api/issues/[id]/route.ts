@@ -1,3 +1,4 @@
+import { getCookie } from '@/app/utility/cookies';
 import { IssueSchema } from '@/app/utility/zodSchema';
 import prisma from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
@@ -7,6 +8,11 @@ interface Props {
 }
 
 export async function PATCH(request: NextRequest, { params: { id } }: Props) {
+	// allow only logged in valid users to access this endpoint
+	const token = getCookie(request, 'token');
+	if (!token)
+		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
 	const body = await request.json();
 	const validateBody = IssueSchema.safeParse(body);
 	if (!validateBody.success)
@@ -42,6 +48,10 @@ export async function PATCH(request: NextRequest, { params: { id } }: Props) {
 }
 
 export async function DELETE(request: NextRequest, { params: { id } }: Props) {
+	const token = getCookie(request, 'token');
+	if (!token)
+		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
 	const issue = await prisma.issue.findUnique({
 		where: {
 			id: parseInt(id),

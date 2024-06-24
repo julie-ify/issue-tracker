@@ -5,8 +5,11 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IoTrashOutline } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
+	const user = useSelector((state: RootState) => state.user.userData);
 	const router = useRouter();
 	const [error, setError] = useState(false);
 	const [isDeleting, setDeleting] = useState(false);
@@ -22,6 +25,8 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
 			setError(true);
 		}
 	};
+
+	if (!user) return null;
 
 	return (
 		<>

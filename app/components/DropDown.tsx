@@ -1,7 +1,6 @@
 'use client';
 import { Box, DropdownMenu, Button, Text } from '@radix-ui/themes';
 import React from 'react';
-import user from '../store/reducers/user';
 import { extractFirstLetter } from '../utility/utils';
 import { UserObj } from '../utility/dataTypes';
 

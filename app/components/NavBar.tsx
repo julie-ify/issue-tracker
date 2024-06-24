@@ -11,6 +11,7 @@ import { setUser } from '../store/reducers/user';
 import DropDown from './DropDown';
 import { errorNotice } from './Toast';
 import { handleError } from './handleError';
+import Skeleton from '@/app/components/Skeleton';
 
 const navLinks = [
 	{ label: 'Dashboard', href: '/' },
@@ -62,6 +63,9 @@ function NavBar() {
 				</Box>
 				<Box className="flex justify-end">
 					{user?.name && <DropDown user={user} handleLogout={handleLogout} />}
+					{!user?.name && (
+						<Skeleton width={'2rem'} height={'2rem'} className="rounded-full" />
+					)}
 				</Box>
 			</Grid>
 		</nav>

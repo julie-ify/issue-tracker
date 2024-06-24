@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 import { IssueSchema } from '@/app/utility/zodSchema';
+import { getCookie } from '@/app/utility/cookies';
+import { verifyToken } from '@/app/utility/auth';
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
@@ -10,10 +12,17 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json({ error: validatedData.error }, { status: 400 });
 	}
 
+	const token = getCookie(request, 'token');
+	if (!token)
+		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
+	const verifiedToken = await verifyToken(token);
+
 	const newIssue = await prisma.issue.create({
 		data: {
 			title: body.title,
 			description: body.description,
+			authorId: verifiedToken.userId as string,
 		},
 	});
 

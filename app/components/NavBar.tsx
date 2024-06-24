@@ -1,24 +1,16 @@
 'use client';
-import React from 'react';
-import Link from 'next/link';
-import { AiFillBug } from 'react-icons/ai';
+import { Box, Grid } from '@radix-ui/themes';
+import axios from 'axios';
 import classnames from 'classnames';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { AiFillBug } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import {
-	Grid,
-	Box,
-	Button,
-	DropdownMenu,
-	Text,
-	Avatar,
-} from '@radix-ui/themes';
-import axios from 'axios';
 import { setUser } from '../store/reducers/user';
+import DropDown from './DropDown';
 import { errorNotice } from './Toast';
 import { handleError } from './handleError';
-import { extractFirstLetter } from '../utility/utils';
 
 const navLinks = [
 	{ label: 'Dashboard', href: '/' },
@@ -69,44 +61,7 @@ function NavBar() {
 					</ul>
 				</Box>
 				<Box className="flex justify-end">
-					{!user?.name && (
-						<Link
-							className={classnames({
-								'text-cyan-600': '/auth/signin' === pathName,
-								'text-zinc-500': '/auth/signin' !== pathName,
-								'hover:text-cyan-600 transition-colors': true,
-							})}
-							href={'/auth/signin'}
-						>
-							Signin
-						</Link>
-					)}
-
-					{user?.name && (
-						<Box className="flex gap-4 items-center">
-							<DropdownMenu.Root>
-								<DropdownMenu.Trigger>
-									<Button variant="soft" className='rounded-full cursor-pointer'>
-										{extractFirstLetter(user.name)}
-									</Button>
-								</DropdownMenu.Trigger>
-								<DropdownMenu.Content>
-									<DropdownMenu.Label>
-										<Text size={'2'}>{user.email}</Text>
-									</DropdownMenu.Label>
-									<DropdownMenu.Item>
-										<Text
-											className="cursor-pointer"
-											onClick={handleLogout}
-											size={'2'}
-										>
-											Logout
-										</Text>
-									</DropdownMenu.Item>
-								</DropdownMenu.Content>
-							</DropdownMenu.Root>
-						</Box>
-					)}
+					{user?.name && <DropDown user={user} handleLogout={handleLogout} />}
 				</Box>
 			</Grid>
 		</nav>

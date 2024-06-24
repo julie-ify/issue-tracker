@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { parse } from 'cookie';
 
 export const setCookie = (
 	res: NextResponse,
@@ -19,8 +18,8 @@ export const setCookie = (
 };
 
 export const getCookie = (req: NextRequest, name: string) => {
-	const cookies = req.cookies.get(name)?.value;
-	return cookies;
+	const token = req.cookies.get(name)?.value;
+	return token;
 };
 
 export const removeCookie = (res: NextResponse, name: string) => {

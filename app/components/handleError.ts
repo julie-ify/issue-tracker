@@ -1,20 +1,13 @@
 import axios from 'axios';
 
-export const handleError = (error: unknown) => {
+export const handleError = (error: any) => {
 	if (axios.isAxiosError(error)) {
 		if (error.response) {
-			switch (error.response.status) {
-				case 400:
-					return error.response.data.error.issues[0].message;
-				case 401:
-					return error.response.data.message;
-				case 500:
-					return '500 Internal Server Error';
-			}
+			return error.response.data.error.message || 'An error occurred';
 		} else {
-			return 'An unexpected Error occurred, try again later';
+			return 'Network error';
 		}
 	} else {
-		return 'Sorry, try again later';
+		return 'An unexpected error occurred';
 	}
 };

@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './components/NavBar';
 import './globals.css';
 import ReduxProvider from './providers/ReduxProvider';
+import QueryClientProvider from './QueryClientProvider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -24,12 +25,14 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.variable}>
 				<Theme accentColor="cyan">
-					<ReduxProvider>
-						<NavBar />
-						<main className="px-8 pb-5 mx-auto max-w-xl w-full md:max-w-4xl space-y-3">
-							{children}
-						</main>
-					</ReduxProvider>
+					<QueryClientProvider>
+						<ReduxProvider>
+							<NavBar />
+							<main className="px-8 pb-5 mx-auto max-w-xl w-full md:max-w-4xl space-y-3">
+								{children}
+							</main>
+						</ReduxProvider>
+					</QueryClientProvider>
 				</Theme>
 				<ToastContainer
 					position="top-right"

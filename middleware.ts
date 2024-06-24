@@ -17,5 +17,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	// + means one or more parameters
-	matcher: ['/', '/issues/edit/:id+']
+	matcher: ['/', '/issues/new', '/issues/edit/:id+']
 };

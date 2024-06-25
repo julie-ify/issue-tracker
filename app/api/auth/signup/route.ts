@@ -46,8 +46,8 @@ export async function POST(request: NextRequest) {
 			{ status: 500 }
 		);
 
-	const { name, email, role } = user;
-	const responseData = { name, email, role };
+	const { id, name, email, role } = user;
+	const responseData = { id, name, email, role };
 
 	const response = NextResponse.json(responseData, { status: 201 });
 

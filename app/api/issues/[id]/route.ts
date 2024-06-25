@@ -1,5 +1,5 @@
 import { getCookie } from '@/app/utility/cookies';
-import { IssueSchema } from '@/app/utility/zodSchema';
+import { PatchIssueSchema } from '@/app/utility/zodSchema';
 import prisma from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -14,9 +14,22 @@ export async function PATCH(request: NextRequest, { params: { id } }: Props) {
 		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
 	const body = await request.json();
-	const validateBody = IssueSchema.safeParse(body);
+	const validateBody = PatchIssueSchema.safeParse(body);
 	if (!validateBody.success)
 		return NextResponse.json(validateBody.error.format(), { status: 400 });
+
+	const { assignedToUserId, title, description } = body;
+
+	if (assignedToUserId) {
+		const user = await prisma.user.findUnique({
+			where: {
+				id: assignedToUserId,
+			},
+		});
+
+		if (!user)
+			return NextResponse.json({ message: 'Invalid user' }, { status: 400 });
+	}
 
 	const issue = await prisma.issue.findUnique({
 		where: {
@@ -27,13 +40,15 @@ export async function PATCH(request: NextRequest, { params: { id } }: Props) {
 	if (!issue)
 		return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
 
+	// the fields are optional, it will only update if passed data otherwise it won't update the field
 	const updatedIssue = await prisma.issue.update({
 		where: {
 			id: issue.id,
 		},
 		data: {
-			title: body.title,
-			description: body.description,
+			title: title,
+			description: description,
+			assignedToUserId: assignedToUserId,
 		},
 	});
 
